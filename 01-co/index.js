@@ -34,5 +34,9 @@ exports.stat = function (filename) {
  */
 
 exports.exists = function (filename) {
-
+  return function (done) {
+    exports.stat(filename)(function (error, stat) {
+      done(null, error === null);
+    });
+  };
 };
