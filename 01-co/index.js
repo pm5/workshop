@@ -12,7 +12,9 @@ var fs = require('fs');
  */
 
 exports.stat = function (filename) {
-
+  return function (done) {
+    fs.stat(filename, done);
+  };
 };
 
 /**
