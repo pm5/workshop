@@ -1,5 +1,6 @@
 
 var fs = require('fs');
+var cofs = require('../01-co');
 var koa = require('koa');
 
 var app = module.exports = koa();
@@ -12,8 +13,9 @@ var app = module.exports = koa();
 app.use(function* (next) {
   if (this.request.path !== '/stream') return yield* next;
 
-  // this.response.type =
-  // this.response.body =
+  this.response.type = 'application/javascript';
+  this.response.length = (yield cofs.stat(__filename)).size;
+  this.response.body = fs.createReadStream(__filename);
 });
 
 /**
@@ -23,5 +25,7 @@ app.use(function* (next) {
 app.use(function* (next) {
   if (this.request.path !== '/json') return yield* next;
 
-  // this.response.body =
+  this.response.body = {
+    message: 'hello world'
+  };
 });
